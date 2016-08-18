@@ -2,42 +2,6 @@ import os,sys
 from pygame import mixer
 from tkinter import *
 from winsound import *
-##pygame.init()
-##pygame.mixer.init()
-###tsound = pygame.mixer.music.load('')
-###pygame.mixer.music.play(-1)
-##
-##tsound = pygame.mixer.music.load('')
-##pygame.mixer.music.play(-1)
-####pygame.mixer.music.play(-1)
-
-##root = Tk() # create tkinter window
-##
-##play = lambda: PlaySound('', SND_FILENAME)
-##button = Button(root, text = 'Play', command = play)
-##
-##button.pack()
-##root.mainloop()
-
-
-##pygame.init()
-##song = pygame.mixer.Sound('')
-##clock = pygame.time.Clock()
-##song.play()
-##while True:
-##    clock.tick(60)
-##pygame.quit()
-
-##import time, sys
-##from pygame import mixer
-##
-##
-##mixer.init()
-##pygame.init()
-##sound = mixer.Sound('')
-##sound.play()
-##
-##time.sleep(5)
 
 cwd = os.getcwd()
 
@@ -126,6 +90,7 @@ class Board_main():
     ##vars
     opt_CTK_MUS = StringVar()
     opt_CTK_SFX = StringVar()
+    opt_MUS_VOL = DoubleVar()
 
     opt_CTK_SFX.set('Current SFX:')
     opt_CTK_MUS.set('Current track:')
@@ -159,12 +124,14 @@ class Board_main():
         opt_play_STP_MUS_Button = Button(opt_MUS_LB,text = 'STOP-MUS',command = self.STOPMUS).pack()
         opt_play_PUS_Button = Button(opt_MUS_LB,text = 'PAUSE',command = self.PMUS).pack()
         opt_play_UPS_Button = Button(opt_MUS_LB,text = 'UNPAUSE',command = self.UPMUS).pack()
+        opt_MUS_VOL_SC =  Scale(opt_MUS_LB, variable = self.opt_MUS_VOL ).pack()
         opt_LB.pack()
         opt_MUS_LB.pack()
         opt_SFX_LB.pack()
         ##post init loads
         self.ldB()##for initial listbox population
         #TkLoop
+        self.win.after(1000,self.EVENT_ALT_LOOP)
         self.win.mainloop()
         
     def clearLB(self):
@@ -199,16 +166,17 @@ class Board_main():
 ##            h.StopMUS()
 ##        else:
 ##            h.StopSND()
-##        try:
-##            h.StopMUS()
-##        except:
-##            print('failed stopping snd')
-##        try:
-##            h.StopSND()
-##        except:
-##            print('failed stopping snd')
-        h.StopSND()
-        h.StopMUS()
+        try:
+            h.StopMUS()
+        except:
+            print('failed stopping snd')
+        try:
+            h.StopSND()
+        except:
+            print('failed stopping snd')
+        
+##        h.StopSND()
+##        h.StopMUS()
     def STOPSFX(self):
         h.StopSND()
     def STOPMUS(self):
@@ -256,6 +224,18 @@ class Board_main():
         pass
     def no(self):## null function
         pass
+    
+    def EVENT_ALT_LOOP(self):##custom event loop
+        ##event code here##
+
+        ##volume slider check
+        if h.LoadedTrack == None:# or self.Music_FLAG == False:
+            print('track MUS is None vol not adjustable!')
+        else:
+            h.LoadedTrack.set_volume((self.opt_MUS_VOL.get()/100))
+        ##
+        ##END EVENT CODE##
+        self.win.after(500, self.EVENT_ALT_LOOP)
 ##functions/procs
 def Fcheck():##fs integrity checker
     if os.path.isdir('DATA'):
