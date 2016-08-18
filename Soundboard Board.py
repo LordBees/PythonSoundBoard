@@ -1,7 +1,7 @@
 import os,sys
 from pygame import mixer
 from tkinter import *
-from winsound import *
+#from winsound import *
 
 cwd = os.getcwd()
 
@@ -219,7 +219,8 @@ class Board_main():
             return [0]
         else:
             return sel
-    ###END
+    ###END playback functions########
+    ##misc functions
     def getsounds(self):
         pass
     def no(self):## null function
@@ -236,6 +237,7 @@ class Board_main():
         ##
         ##END EVENT CODE##
         self.win.after(500, self.EVENT_ALT_LOOP)
+
 ##functions/procs
 def Fcheck():##fs integrity checker
     if os.path.isdir('DATA'):
