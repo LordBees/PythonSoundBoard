@@ -256,8 +256,16 @@ class Board_main():
         pass
     def no(self):## null function
         pass
+##functions/procs
+def Fcheck():##fs integrity checker
+    if os.path.isdir('DATA'):
+        pass
+    else:
+        print('|creating DATA folder')
+        os.mkdir('DATA') 
 ##init
 ####
+Fcheck()
 #mixer.init()
 h = SoundHandler()        
 ##tkloop
